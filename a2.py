@@ -77,9 +77,8 @@ class PipeGame:
     # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
 
 
-def main():
-    print("Please run gui.py instead")
 
 
 if __name__ == "__main__":
-    main()
+    print("Please run gui.py instead")
+
