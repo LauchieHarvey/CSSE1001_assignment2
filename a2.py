@@ -77,6 +77,11 @@ class PipeGame:
     # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
 
 
+class Tile:
+
+    def __init__(self, selectable = True):
+        pass
+    
 
 
 if __name__ == "__main__":
