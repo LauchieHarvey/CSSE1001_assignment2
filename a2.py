@@ -64,24 +64,41 @@ class PipeGame:
     #                 new_position = None
     #             else:
     #                 new_direction, new_position = self.position_in_direction(direction, position)
-    #             if new_position == self.get_ending_position() and direction == self.pipe_in_position(
-    #                     new_position).get_connected()[0]:
-    #                 return True
-
-    #             pipe = self.pipe_in_position(new_position)
-    #             if pipe is None or (pipe, new_direction) in discovered:
-    #                 continue
-    #             discovered.append((pipe, new_direction))
-    #             queue.append((pipe, new_direction, new_position))
-    #     return False
-    # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
-
-
-class Tile:
-
-    def __init__(self, selectable = True):
-        pass
+    #             if new_position == self.get_ending_posit(ion() and direction == self.pipe_in_position(
+        #                     new_position).get_connected()[0]:
+        #                 return True
     
+        #             pipe = self.pipe_in_position(new_position)
+        #             if pipe is None or (pipe, new_direction) in discovered:
+        #                 continue
+        #             discovered.append((pipe, new_direction))
+        #             queue.append((pipe, new_direction, new_position))
+        #     return False
+        # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
+    
+    
+    class Tile:
+    
+        def __init__(self, selectable = True):
+            pass
+    
+        def get_name(self):
+            pass
+    
+        def get_id(self):
+            pass
+
+        def set_select(self, select):
+            pass
+
+        def can_select(self):
+            pass
+
+        def __str__(self):
+            pass
+
+        def __repr__(self):
+            pass
 
 
 if __name__ == "__main__":
