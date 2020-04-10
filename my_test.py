@@ -1,4 +1,5 @@
 from a2 import Tile
+from a2 import Pipe
 import unittest
 
 class Test_Tile_methods(unittest.TestCase):
@@ -34,6 +35,31 @@ class Test_Tile_methods(unittest.TestCase):
 		non_selectable_tile2 = Tile('Not selectable', False)
 		Tile.set_select(non_selectable_tile2, False)
 		self.assertEqual(non_selectable_tile2.can_select(), False)
+
+
+class Test_Pipe_methods(unittest.TestCase):
+
+	def setUp(self):
+		self.a_pipe_name = "pipe1"
+		self.a_pipe = Pipe(self.a_pipe_name)
+
+	def test_inherited_methods(self):
+		self.assertEqual(self.a_pipe.get_name(), self.a_pipe_name)
+		self.assertEqual(self.a_pipe.get_id(), "pipe")
+
+	def test_rotate_get_orientation(self):
+		"""tests both rotate and get_orientation."""
+
+		self.assertEqual(self.a_pipe.get_orientation(), 0)
+
+		self.a_pipe.rotate(1)
+		self.assertEqual(self.a_pipe.get_orientation(), 1)
+		self.a_pipe.rotate(1)
+		self.a_pipe.rotate(1)
+		self.assertEqual(self.a_pipe.get_orientation(), 3)
+		self.a_pipe.rotate(1)
+		self.assertEqual(self.a_pipe.get_orientation(), 0)
+
 
 if __name__ == '__main__':
 	unittest.main()

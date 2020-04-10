@@ -78,7 +78,6 @@ class PipeGame:
     
     
 class Tile:
-    ID = "tile" # Needs to be dynamically assigned depending on subclass
 
     def __init__(self, name, selectable = True):
         """ Instantiates a Tile
@@ -93,6 +92,7 @@ class Tile:
         """
         self.__name = name
         self.__selectable = selectable
+        self._ID = "tile"
 
     def get_name(self):
         """ Returns the name of the tile instance
@@ -114,7 +114,7 @@ class Tile:
                 Returns:
                     str: The ID of the given Tile instance
         """
-        return ID
+        return self._ID
 
     def set_select(self, select):
         """ Updated the "selected" status of the given Tile instance
@@ -153,14 +153,16 @@ class Tile:
 
     def __repr__(self):
         """ Equivalent functionality as __str__ above."""
-        return self.__str__()
+        return str(self)
 
 
 class Pipe(Tile):
 
-    def __init__(self):
-        super().__init__()
-        self.__orientation = 0
+    def __init__(self, name, orientation = 0):
+        super().__init__(name)
+        self.__orientation = orientation
+        self._ID = "pipe"
+
 
     def get_connected(self, side):
         """ Returns a list containing all of the sides that connect to the given side.
@@ -186,7 +188,7 @@ class Pipe(Tile):
                 Returns:
                     Void.
         """
-        pass
+        self.__orientation += 1 if self.__orientation != 3 else -3
 
     def get_orientation(self):
         """ Getter method for the orientation of the pipe 
@@ -197,7 +199,7 @@ class Pipe(Tile):
                 Returns:
                     int: orientation [0, 1, 2, 3]
         """
-        pass
+        return self.__orientation
 
     def __str__(self):
         """Returns the string representation of the Pipe.
@@ -208,11 +210,11 @@ class Pipe(Tile):
                 Returns:
                     str: String representing the given instance
         """
-        pass
+        return f"Pipe('{self.__name}', {self.__orientation})"
 
     def __repr__(self):
         """ Same functionality as Pipe.str()"""
-        pass
+        return str(self)
 
 
 
