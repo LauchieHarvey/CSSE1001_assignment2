@@ -47,6 +47,9 @@ class Test_Pipe_methods(unittest.TestCase):
 		self.assertEqual(self.a_pipe.get_name(), self.a_pipe_name)
 		self.assertEqual(self.a_pipe.get_id(), "pipe")
 
+	def test_str_and_repr(self):
+		self.assertEqual(str(self.a_pipe), f"Pipe('{self.a_pipe_name}', {self.a_pipe.get_orientation()})")
+
 	def test_rotate_get_orientation(self):
 		"""tests both rotate and get_orientation."""
 

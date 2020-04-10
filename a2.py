@@ -90,7 +90,7 @@ class Tile:
                 Returns:
                     Void
         """
-        self.__name = name
+        self._name = name
         self.__selectable = selectable
         self._ID = "tile"
 
@@ -103,7 +103,7 @@ class Tile:
                 Returns:
                     str: The name of the tile instance
         """
-        return self.__name
+        return self._name
 
     def get_id(self):
         """ Returns the ID of the given Tile instance 
@@ -210,7 +210,7 @@ class Pipe(Tile):
                 Returns:
                     str: String representing the given instance
         """
-        return f"Pipe('{self.__name}', {self.__orientation})"
+        return f"Pipe('{self._name}', {self.__orientation})"
 
     def __repr__(self):
         """ Same functionality as Pipe.str()"""
