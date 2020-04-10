@@ -155,6 +155,83 @@ class Tile:
         """ Equivalent functionality as __str__ above."""
         return self.__str__()
 
+class Pipe:
+
+    def __init__():
+        pass
+
+    def get_connected(self, side):
+        """ Returns a list containing all of the sides that connect to the given side.
+
+                Parameters:
+                    side (str): The side of the pipe 
+                    'N', 'S', 'E' or 'W' that is being checked
+                    self (Pipe obj): An instance of the pipe (or a child) class.
+
+                Returns:
+                    list<str>: a list of characters corresponding to sides of the tile.
+        """
+        pass
+
+    def rotate(self, direction):
+        """ Rotates the given pipe by 90 degrees in the specified direction.
+
+                Parameters: 
+                    direction (int): -ve, +ve or zero indicating counter-clockwise,
+                    clockwise rotation or no rotation respectively.
+                    self (Pipe obj): An instance of the Pipe (or a child) class.
+
+                Returns:
+                    Void.
+        """
+        pass
+
+    def get_orientation(self):
+        """ Getter method for the orientation of the pipe 
+
+                Parameters:
+                    self (Pipe obj): An instance of the Pipe (or a child) class.
+
+                Returns:
+                    int: orientation [0, 1, 2, 3]
+        """
+        pass
+
+    def __str__(self):
+        """Returns the string representation of the Pipe.
+
+                Parameters:
+                    self(Pipe obj): An instance of the Pipe class or a child class
+
+                Returns:
+                    str: String representing the given instance
+        """
+        pass
+
+    def __repr__(self):
+        """ Same functionality as Pipe.str()"""
+        pass
+
+
+
+
+class SpecialPipe:
+
+    def __init__():
+        pass
+
+
+class StartPipe:
+
+    def __init__():
+        pass
+
+
+class EndPipe:
+
+    def __init__():
+        pass
+
 
 if __name__ == "__main__":
     print("Please run gui.py instead")
