@@ -155,7 +155,8 @@ class Tile:
         """ Equivalent functionality as __str__ above."""
         return self.__str__()
 
-class Pipe:
+
+class Pipe(Tile):
 
     def __init__():
         pass
@@ -215,19 +216,19 @@ class Pipe:
 
 
 
-class SpecialPipe:
+class SpecialPipe(Pipe):
 
     def __init__():
         pass
 
 
-class StartPipe:
+class StartPipe(SpecialPipe):
 
     def __init__():
         pass
 
 
-class EndPipe:
+class EndPipe(SpecialPipe):
 
     def __init__():
         pass
