@@ -93,8 +93,6 @@ class Tile:
         """
         self.__name = name
         self.__selectable = selectable
-        self.__is_selected = False
-
 
     def get_name(self):
         """ Returns the name of the tile instance
@@ -128,10 +126,8 @@ class Tile:
                 Returns:
                     Void             
         """
-        if self.__selectable and select:
-            self.__is_selected = True
-        else:
-            self.__is_selected = False
+        self.__selectable = select
+
 
     def can_select(self):
         """ Returns whether the given Tile instance can be selected or not.
