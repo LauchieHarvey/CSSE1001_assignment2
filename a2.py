@@ -78,18 +78,23 @@ class PipeGame:
     
     
 class Tile:
+    self.__ID = "tile"
 
-    def __init__(self, selectable = True):
+    def __init__(self, name, selectable = True):
         """ Instantiates a Tile
 
                 Parameters:
                     self (Tile obj): The variable name to store the instance in.
                     selectabe (bool): Whether the tile can be selected by the user.
+                    name (str): The name of the tile.
 
                 Returns:
                     Void
         """
-        pass
+        self.__name = name
+        self.__selectable = selectable
+        self.__is_selected = False
+
 
     def get_name(self):
         """ Returns the name of the tile instance
@@ -100,7 +105,7 @@ class Tile:
                 Returns:
                     str: The name of the tile instance
         """
-        pass
+        return self.__name
 
     def get_id(self):
         """ Returns the ID of the given Tile instance 
@@ -111,7 +116,7 @@ class Tile:
                 Returns:
                     str: The ID of the given Tile instance
         """
-        pass
+        return self.__ID
 
     def set_select(self, select):
         """ Updated the "selected" status of the given Tile instance
@@ -123,7 +128,10 @@ class Tile:
                 Returns:
                     Void             
         """
-        pass
+        if self.__selectable and select:
+            self.__is_selected = True
+        else:
+            self.__is_selected = False
 
     def can_select(self):
         """ Returns whether the given Tile instance can be selected or not.
@@ -134,7 +142,7 @@ class Tile:
                 Returns:
                     bool: Whether the tile instance is selectable or not.
         """
-        pass
+        return self.__selectable
 
     def __str__(self):
         """ Returns the string representation of the given Tile instance
@@ -145,11 +153,11 @@ class Tile:
                 Returns:
                     str: String representing the given instance
         """
-        pass
+        return f"Tile('{self.get_name()}', {self.can_select()})"
 
     def __repr__(self):
         """ Equivalent functionality as __str__ above."""
-        pass
+        return self.__str__()
 
 
 if __name__ == "__main__":
