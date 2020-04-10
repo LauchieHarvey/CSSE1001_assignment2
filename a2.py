@@ -77,79 +77,79 @@ class PipeGame:
         # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
     
     
-    class Tile:
-    
-        def __init__(self, selectable = True):
-            """ Instantiates a Tile
+class Tile:
 
-                    Parameters:
-                        self (Tile obj): The variable name to store the instance in.
-                        selectabe (bool): Whether the tile can be selected by the user.
+    def __init__(self, selectable = True):
+        """ Instantiates a Tile
 
-                    Returns:
-                        Void
-            """
-            pass
-    
-        def get_name(self):
-            """ Returns the name of the tile instance
+                Parameters:
+                    self (Tile obj): The variable name to store the instance in.
+                    selectabe (bool): Whether the tile can be selected by the user.
 
-                    Parameters:
-                        Tile (obj): an instance of the Tile class
+                Returns:
+                    Void
+        """
+        pass
 
-                    Returns:
-                        str: The name of the tile instance
-            """
-            pass
-    
-        def get_id(self):
-            """ Returns the ID of the given Tile instance 
+    def get_name(self):
+        """ Returns the name of the tile instance
 
-                    Parameters:
-                        Tile(obj): An instance of the tile class
+                Parameters:
+                    Tile (obj): an instance of the Tile class
 
-                    Returns:
-                        str: The ID of the given Tile instance
-            """
-            pass
+                Returns:
+                    str: The name of the tile instance
+        """
+        pass
 
-        def set_select(self, select):
-            """ Updated the "selected" status of the given Tile instance
+    def get_id(self):
+        """ Returns the ID of the given Tile instance 
 
-                    Parameters:
-                        Tile(obj): An instance of the tile class
-                        select (bool): The selected status to update the tile instance to.
+                Parameters:
+                    Tile(obj): An instance of the tile class
 
-                    Returns:
-                        Void             
-            """
-            pass
+                Returns:
+                    str: The ID of the given Tile instance
+        """
+        pass
 
-        def can_select(self):
-            """ Returns whether the given Tile instance can be selected or not.
+    def set_select(self, select):
+        """ Updated the "selected" status of the given Tile instance
 
-                    Parameters:
-                        Tile(obj): An instance of the tile class
-                    
-                    Returns:
-                        bool: Whether the tile instance is selectable or not.
-            """
-            pass
+                Parameters:
+                    Tile(obj): An instance of the tile class
+                    select (bool): The selected status to update the tile instance to.
 
-        def __str__(self):
-            """ Returns the string representation of the given Tile instance
+                Returns:
+                    Void             
+        """
+        pass
 
-                    Parameters:
-                        Tile(obj): An instance of the tile class
+    def can_select(self):
+        """ Returns whether the given Tile instance can be selected or not.
 
-                    Returns:
-                        str: String representing the given instance
-            """
-            pass
+                Parameters:
+                    Tile(obj): An instance of the tile class
+                
+                Returns:
+                    bool: Whether the tile instance is selectable or not.
+        """
+        pass
 
-        def __repr__(self):
-            """ Equivalent functionality as __str__ above."""
-            pass
+    def __str__(self):
+        """ Returns the string representation of the given Tile instance
+
+                Parameters:
+                    Tile(obj): An instance of the tile class
+
+                Returns:
+                    str: String representing the given instance
+        """
+        pass
+
+    def __repr__(self):
+        """ Equivalent functionality as __str__ above."""
+        pass
 
 
 if __name__ == "__main__":
