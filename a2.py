@@ -78,7 +78,7 @@ class PipeGame:
     
     
 class Tile:
-    ID = "tile"
+    ID = "tile" # Needs to be dynamically assigned depending on subclass
 
     def __init__(self, name, selectable = True):
         """ Instantiates a Tile
@@ -158,8 +158,9 @@ class Tile:
 
 class Pipe(Tile):
 
-    def __init__():
-        pass
+    def __init__(self):
+        super().__init__()
+        self.__orientation = 0
 
     def get_connected(self, side):
         """ Returns a list containing all of the sides that connect to the given side.
@@ -218,8 +219,21 @@ class Pipe(Tile):
 
 class SpecialPipe(Pipe):
 
-    def __init__():
+    def __str__(self):
+        """Returns the string representation of the Pipe.
+
+                Parameters:
+                    self(Pipe obj): An instance of SpecialPipe subclass
+
+                Returns:
+                    str: String representing the given instance
+        """
         pass
+
+    def __repr__(self):
+        """ Same functionality as str(self)"""
+        pass
+
 
 
 class StartPipe(SpecialPipe):
