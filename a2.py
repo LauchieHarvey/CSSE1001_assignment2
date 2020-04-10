@@ -78,7 +78,7 @@ class PipeGame:
     
     
 class Tile:
-    self.__ID = "tile"
+    ID = "tile"
 
     def __init__(self, name, selectable = True):
         """ Instantiates a Tile
@@ -116,7 +116,7 @@ class Tile:
                 Returns:
                     str: The ID of the given Tile instance
         """
-        return self.__ID
+        return ID
 
     def set_select(self, select):
         """ Updated the "selected" status of the given Tile instance
