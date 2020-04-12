@@ -40,8 +40,11 @@ class Test_Tile_methods(unittest.TestCase):
 class Test_Pipe_methods(unittest.TestCase):
 
 	def setUp(self):
-		self.a_pipe_name = "pipe1"
+		self.a_pipe_name = "straight"
 		self.a_pipe = Pipe(self.a_pipe_name)
+
+		self.b_pipe_name = "corner"
+		self.b_pipe = Pipe(self.b_pipe_name)
 
 	def test_inherited_methods(self):
 		self.assertEqual(self.a_pipe.get_name(), self.a_pipe_name)
@@ -62,6 +65,13 @@ class Test_Pipe_methods(unittest.TestCase):
 		self.assertEqual(self.a_pipe.get_orientation(), 3)
 		self.a_pipe.rotate(1)
 		self.assertEqual(self.a_pipe.get_orientation(), 0)
+
+	def test_get_connected(self):
+		self.assertEqual(self.a_pipe.get_connected("N"), ['S'])
+		self.assertEqual(self.a_pipe.get_connected("L"), [])
+
+		self.assertEqual(self.b_pipe.get_connected("E"), ['S'])
+		self.assertEqual(self.b_pipe.get_connected("J"), [])
 
 
 if __name__ == '__main__':
