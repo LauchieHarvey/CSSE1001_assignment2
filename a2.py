@@ -18,7 +18,7 @@ PIPES = {
     "OU": "over-under"
 }
 
-# Only works in orientation of 0 for diagonals, corners and junctions-t.
+# Only works in orientation of 0.
 PIPE_CONNECTIONS_AS_LISTS = {
     "straight": {'N': ['S'], 'S': ['N']},
     "corner": {'N': ['E'], 'E': ['N']},
@@ -167,6 +167,7 @@ class Tile:
     def __repr__(self):
         """ Equivalent functionality as __str__ above."""
         return str(self)
+
 
 
 class Pipe(Tile):
