@@ -46,6 +46,9 @@ class Test_Pipe_methods(unittest.TestCase):
 		self.b_pipe_name = "corner"
 		self.b_pipe = Pipe(self.b_pipe_name)
 
+		self.c_pipe_name = "corner"
+		self.c_pipe = Pipe(self.c_pipe_name, 2)
+
 	def test_inherited_methods(self):
 		self.assertEqual(self.a_pipe.get_name(), self.a_pipe_name)
 		self.assertEqual(self.a_pipe.get_id(), "pipe")
@@ -70,8 +73,11 @@ class Test_Pipe_methods(unittest.TestCase):
 		self.assertEqual(self.a_pipe.get_connected("N"), ['S'])
 		self.assertEqual(self.a_pipe.get_connected("L"), [])
 
-		self.assertEqual(self.b_pipe.get_connected("E"), ['S'])
+		self.assertEqual(self.b_pipe.get_connected("E"), ['N'])
 		self.assertEqual(self.b_pipe.get_connected("J"), [])
+
+		self.assertEqual(self.c_pipe.get_connected("N"), [])
+		self.assertEqual(self.c_pipe.get_connected("J"), [])
 
 
 if __name__ == '__main__':

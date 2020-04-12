@@ -20,13 +20,13 @@ PIPES = {
 
 # Only works in orientation of 0 for diagonals, corners and junctions-t.
 PIPE_CONNECTIONS_AS_LISTS = {
-    "straight": {'N': ['S'], 'E': ['W'], 'S': ['N'], 'W': ['E']},
-    "corner": {'N': ['E'], 'E': ['S'], 'S': ['W'], 'W': ['N']},
+    "straight": {'N': ['S'], 'S': ['N']},
+    "corner": {'N': ['E'], 'E': ['N']},
 
-    "cross" : {'N': ['N', 'S', 'E', 'W'], "S": ['N', 'S', 'E', 'W'],
-                'S': ['N', 'S', 'E', 'W'], "W": ['N', 'S', 'E', 'W']},
+    "cross" : {'N': ['S', 'E', 'W'], "S": ['N', 'E', 'W'],
+                'S': ['N', 'E', 'W'], "W": ['N', 'S', 'E']},
 
-    "junction-t": {'N': ['N', 'E', 'W'], 'E': ['E', 'N', 'S'], 'S': ['S', 'E', 'W']},
+    "junction-t": {'N': ['E', 'W'], 'E': ['N', 'S'], 'S': ['S', 'E', 'W']},
     "diagonals": {'N': ['E'], 'E': ['W'], 'S': ['W'], 'W': ['S']},
     "over-under": {'N': ['S'], 'E': ['W'], 'S': ['N'], 'W': ['E']}
 }
@@ -187,20 +187,29 @@ class Pipe(Tile):
 
                 Returns:
                     list<str>: a list of characters corresponding to sides of the tile.
+                    empty list if input is invalid or no sides connect.
         """
         standard_side = Pipe.convert_orientation(side, self.__orientation, 0)
         standard_connections_dict = PIPE_CONNECTIONS_AS_LISTS.get(self._name, None)
         if standard_connections_dict is None or standard_side is None:
-            return [] 
+            return []
+
         standard_connections = standard_connections_dict.get(standard_side)
-        return [Pipe.convert_orientation(i, 0, self.__orientation) for i in standard_connections]
-       
+        if standard_connections is not None:
+            return [Pipe.convert_orientation(i, 0, self.__orientation) for i in standard_connections]
+        else:
+            return []
+
+
     @staticmethod
     def convert_orientation(current_side, current_orientation, new_orientation = 0):
         """ Static method converts a side to a side in a different orientation."""
         if current_side not in "NSEW":
             return None
-        directions = ["NSEW", "ESWN", "SWNE", "WNES"]
+        elif current_orientation == new_orientation:
+            return current_side
+
+        directions = ["NESW", "WNES", "SWNE", "ESWN"]
         side_index = directions[current_orientation].find(current_side)
         converted_side = directions[new_orientation][side_index]
         return converted_side
