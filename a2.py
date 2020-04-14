@@ -260,9 +260,10 @@ class Pipe(Tile):
 
 class SpecialPipe(Pipe):
 
-    def __init__(self, name, orientation = 0):
-        super().__init__(name, orientation, selectable = False)
+    def __init__(self, orientation = 0):
+        super().__init__(name = "", selectable = False)
         self._ID = "special_pipe"
+        self._orientation = orientation
 
 
     def __str__(self):
@@ -274,15 +275,18 @@ class SpecialPipe(Pipe):
                 Returns:
                     str: String representing the given instance
         """
-        pass
+        return f"{self.__class__.__name__}({self._orientation})"
 
     def __repr__(self):
         """ Same functionality as str(self)"""
-        pass
+        return str(self)
 
 
 
 class StartPipe(SpecialPipe):
+
+    def __init__(self, orientation = 0):
+        super().__init__(orientation)
 
     def get_connected(self, side = None):
         """ Overwritten method from Pipe Superclass. Returns direction of the StartPipe instance.
@@ -300,18 +304,23 @@ class StartPipe(SpecialPipe):
 
 class EndPipe(SpecialPipe):
 
+    def __init__(self, orientation = 0):
+        super().__init__(orientation)
+
+
+
     def get_connected(self, side = None):
-    """ Overwritten method from Pipe Superclass. Returns direction of the EndPipe instance.
+        """ Overwritten method from Pipe Superclass. Returns direction of the EndPipe instance.
 
-            Parameters:
-                self (StartPipe obj): An instance of the StartPipe class
-                side (None): Irrelevant in determining the facing direction. 
-                It is only a parameter to avoid extra parameter error.
+                Parameters:
+                    self (StartPipe obj): An instance of the StartPipe class
+                    side (None): Irrelevant in determining the facing direction. 
+                    It is only a parameter to avoid extra parameter error.
 
-            Returns:
-                char: The direction that the start pipe is facing (N, S, E or W)
-    """
-    return "SWNE"[self._orientation]
+                Returns:
+                    char: The direction that the start pipe is facing (N, S, E or W)
+        """
+        return "SWNE"[self._orientation]
 
 
 if __name__ == "__main__":
