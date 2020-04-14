@@ -110,7 +110,7 @@ class PipeGame:
         playable_pipes[pipe_name] = playable_pipes.get(pipe_name, 0) + number
 
 
-    def get_pipe(self, position) -> (Pipe|Tile):
+    def get_pipe(self, position):
         """ Getter method for pipe/tile object at a given position on the game board.
 
                 Parameters:
@@ -138,10 +138,21 @@ class PipeGame:
         """
         self.board_layout[position[0]][position[1]] = pipe
 
-    def pipe_in_position(self, position) -> Pipe:
+    def pipe_in_position(self, position):
+        """ Returns the Pipe instance of the pipe in the given position of the game board if it exists.
+
+                Parameters: 
+                    self (PipeGame obj): An instance of the PipeGame class.
+                    position (tuple<int, int>): A tuple in form (row, col) corresponding 
+                    to the locations of the tile/pipe in the 2D game list.
+
+                Returns:
+                    Pipe (obj): The instance of the pipe in the given position
+                    None: If the tile doesn't contain a pipe or the position is invalid.
+        """
         pass
 
-    def remove_pipe(self, position: tuple<int, int>):
+    def remove_pipe(self, position):
         pass
 
     def position_in_direction(self, direction, position) -> tuple<str, tuple<int, int>>:
