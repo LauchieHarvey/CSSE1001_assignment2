@@ -150,12 +150,33 @@ class PipeGame:
                     Pipe (obj): The instance of the pipe in the given position
                     None: If the tile doesn't contain a pipe or the position is invalid.
         """
-        pass
+        if position is None:
+            return None
+
+        obj_at_position = self.board_layout[position[0]][position[1]]
+
+        if obj_at_position.get_id() is in ["pipe", "special_pipe"]:
+            return obj_at_position
 
     def remove_pipe(self, position):
-        pass
+        """ Replaces the pipe with a tile at the given position from the game board.
+            
+                Parameters:
+                    self (PipeGame obj): An instance of the PipeGame class.
+                    position (tuple<int, int>): A tuple in form (row, col) corresponding 
+                    to the locations of the tile/pipe in the 2D game list.
+
+                Returns:
+                    Void.
+        """
+        old_pipe = self.board_layout[position[0]][position[1]]
+        self.playable_pipes[old_pipe] += 1
+        old_pipe = Tile("tile")
+
 
     def position_in_direction(self, direction, position) -> tuple<str, tuple<int, int>>:
+        """
+        """
         pass
 
     def end_pipe_positions(self):
