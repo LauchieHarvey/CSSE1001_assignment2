@@ -174,7 +174,7 @@ class Pipe(Tile):
 
     def __init__(self, name, orientation = 0, selectable = True):
         super().__init__(name, selectable)
-        self.__orientation = orientation
+        self._orientation = orientation
         self._ID = "pipe"
 
 
@@ -190,14 +190,14 @@ class Pipe(Tile):
                     list<str>: a list of characters corresponding to sides of the tile.
                     empty list if input is invalid or no sides connect.
         """
-        standard_side = Pipe.convert_orientation(side, self.__orientation, 0)
+        standard_side = Pipe.convert_orientation(side, self._orientation, 0)
         standard_connections_dict = PIPE_CONNECTIONS_AS_LISTS.get(self._name, None)
         if standard_connections_dict is None or standard_side is None:
             return []
 
         standard_connections = standard_connections_dict.get(standard_side)
         if standard_connections is not None:
-            return [Pipe.convert_orientation(i, 0, self.__orientation) for i in standard_connections]
+            return [Pipe.convert_orientation(i, 0, self._orientation) for i in standard_connections]
         else:
             return []
 
@@ -227,7 +227,7 @@ class Pipe(Tile):
                 Returns:
                     Void.
         """
-        self.__orientation += 1 if self.__orientation != 3 else -3
+        self._orientation += 1 if self._orientation != 3 else -3
 
     def get_orientation(self):
         """ Getter method for the orientation of the pipe 
@@ -238,7 +238,7 @@ class Pipe(Tile):
                 Returns:
                     int: orientation [0, 1, 2, 3]
         """
-        return self.__orientation
+        return self._orientation
 
     def __str__(self):
         """Returns the string representation of the Pipe.
@@ -249,7 +249,7 @@ class Pipe(Tile):
                 Returns:
                     str: String representing the given instance
         """
-        return f"Pipe('{self._name}', {self.__orientation})"
+        return f"Pipe('{self._name}', {self._orientation})"
 
     def __repr__(self):
         """ Same functionality as Pipe.str()"""
@@ -284,14 +284,34 @@ class SpecialPipe(Pipe):
 
 class StartPipe(SpecialPipe):
 
-    def __init__():
-        pass
+    def get_connected(self, side = None):
+        """ Overwritten method from Pipe Superclass. Returns direction of the StartPipe instance.
+
+                Parameters:
+                    self (StartPipe obj): An instance of the StartPipe class
+                    side (None): Irrelevant in determining the facing direction. 
+                    It is only a parameter to avoid extra parameter error.
+
+                Returns:
+                    char: The direction that the start pipe is facing (N, S, E or W)
+        """
+        return "NESW"[self._orientation]
 
 
 class EndPipe(SpecialPipe):
 
-    def __init__():
-        pass
+    def get_connected(self, side = None):
+    """ Overwritten method from Pipe Superclass. Returns direction of the EndPipe instance.
+
+            Parameters:
+                self (StartPipe obj): An instance of the StartPipe class
+                side (None): Irrelevant in determining the facing direction. 
+                It is only a parameter to avoid extra parameter error.
+
+            Returns:
+                char: The direction that the start pipe is facing (N, S, E or W)
+    """
+    return "SWNE"[self._orientation]
 
 
 if __name__ == "__main__":
