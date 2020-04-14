@@ -58,6 +58,11 @@ class PipeGame:
         #########################COMMENT THIS SECTION OUT WHEN DOING load_file#######################
 
         ### add code here ###
+        self._starting_position = None
+        self._ending_position = None
+        # Function call also sets the starting and ending position variables.
+        self.end_pipe_positions() 
+        
 
     # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
     # def check_win(self):
@@ -155,7 +160,7 @@ class PipeGame:
 
         obj_at_position = self.board_layout[position[0]][position[1]]
 
-        if obj_at_position.get_id() is in ["pipe", "special_pipe"]:
+        if obj_at_position.get_id() in ["pipe", "special_pipe"]:
             return obj_at_position
 
     def remove_pipe(self, position):
@@ -174,19 +179,36 @@ class PipeGame:
         old_pipe = Tile("tile")
 
 
-    def position_in_direction(self, direction, position) -> tuple<str, tuple<int, int>>:
-        """
+    def position_in_direction(self, direction, position): #  -> tuple<str, tuple<int, int>>
+        """ No fucking clue.
+
         """
         pass
 
+    #O(n) worst case despite two for loops.
     def end_pipe_positions(self):
-        pass
+        for row_num, row in enumerate(self.board_layout):
+            for col_num, tile in enumerate(row):
+                # Below if checks if the instance is a special_pipe and that at least one of 
+                # the start_pipe/end_pipe hasn't been found yet
+                if (tile.get_id == "special_pipe" and
+                    (not self._starting_position or not self._ending_position)
+                    ):
 
-    def get_starting_position(self) -> (tuple<int, int>):
-        pass
+                    if tile.__class__.__name__ == "EndPipe":
+                        self._ending_position = (row_num, col_num)
+                    elif tile.__class__.__name__ == "StartPipe":
+                        self._starting_position = (row_num, col_num)
 
-    def get_ending_position(self) -> (tuple<int, int>):
-        pass
+
+    def get_starting_position(self):
+        """ Getter method for the positon of the starting pipe in the board_layout. """
+        return self._starting_position
+
+
+    def get_ending_position(self):
+        """ Getter method for the positon of the end pipe in the board_layout. """
+        return self._ending_position
 
     
     
@@ -204,7 +226,7 @@ class Tile:
                     Void
         """
         self._name = name
-        self.__selectable = selectable
+        self._selectable = selectable
         self._ID = "tile"
 
     def get_name(self):
@@ -239,7 +261,7 @@ class Tile:
                 Returns:
                     Void             
         """
-        self.__selectable = select
+        self._selectable = select
 
 
     def can_select(self):
@@ -251,7 +273,7 @@ class Tile:
                 Returns:
                     bool: Whether the tile instance is selectable or not.
         """
-        return self.__selectable
+        return self._selectable
 
     def __str__(self):
         """ Returns the string representation of the given Tile instance
