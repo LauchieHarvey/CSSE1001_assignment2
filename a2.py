@@ -45,7 +45,7 @@ class PipeGame:
             game_file (str): name of the game file.
         """
         #########################COMMENT THIS SECTION OUT WHEN DOING load_file#######################
-        board_layout = [[Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), \
+        self.board_layout = [[Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), \
         Tile('tile', True), Tile('tile', True)], [StartPipe(1), Tile('tile', True), Tile('tile', True), \
         Tile('tile', True), Tile('tile', True), Tile('tile', True)], [Tile('tile', True), Tile('tile', True), \
         Tile('tile', True), Pipe('junction-t', 0, False), Tile('tile', True), Tile('tile', True)], [Tile('tile', True), \
@@ -54,7 +54,7 @@ class PipeGame:
         Tile('tile', True)], [Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), \
         Tile('tile', True), Tile('tile', True)]]
 
-        playable_pipes = {'straight': 1, 'corner': 1, 'cross': 1, 'junction-t': 1, 'diagonals': 1, 'over-under': 1}
+        self.playable_pipes = {'straight': 1, 'corner': 1, 'cross': 1, 'junction-t': 1, 'diagonals': 1, 'over-under': 1}
         #########################COMMENT THIS SECTION OUT WHEN DOING load_file#######################
 
         ### add code here ###
@@ -89,20 +89,54 @@ class PipeGame:
         #     return False
         # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
 
-    def get_board_layout(self) -> (list<list<Tile, ...>>):
-        pass
+    def get_board_layout(self):
+        """ Getter method for the 2D board layout of the game."""
+        return self.board_layout
 
-    def get_playable_pipes(self) ->(dict<str:int>)​:
-        pass
+    def get_playable_pipes(self):
+        """ Getter method for the playable pipes dictionary of the game instance."""
+        return self.playable_pipes
 
     def change_playable_amount(self, pipe_name: str, number: int):
-        pass
+        """ Increments the amount of playable pipes for the specified pipe type by number
+            
+                Parameters:
+                    pipe_name (str): The type of pipe (one of those outlined in PIPES dictionary)
+                    number (int): The amount to increment the playable amount of the specified pipe by.
+                
+                Returns:
+                    Void.
+        """
+        playable_pipes[pipe_name] = playable_pipes.get(pipe_name, 0) + number
+
 
     def get_pipe(self, position) -> (Pipe|Tile):
-        pass
+        """ Getter method for pipe/tile object at a given position on the game board.
 
-    def set_pipe(self, pipe: Pipe, position: tuple<int, int>):
-        pass
+                Parameters:
+                    self (PipeGame Obj): An instance of the PipeGame class.
+                    position (tuple<int, int>): A tuple in form (row, col) corresponding 
+                    to the locations of the tile/pipe in the 2D game list.
+
+                Returns:
+                    (Pipe | Tile) obj: If the tile has no Pipe then a tile instance is returned.
+                    Otherwise the most specialised instance of the pipe is returned.
+        """
+        return self.board_layout[position[0]][position[1]]
+
+    def set_pipe(self, pipe, position):
+        """ Setter method, sets the tile at the given position to the given pipe. Updates available pipes.
+
+                Parameters:
+                    self (PipeGame obj): An instance of the PipeGame class.
+                    position (tuple<int, int>): A tuple in form (row, col) corresponding 
+                    to the locations of the tile/pipe in the 2D game list.
+                    pipe (Pipe obj): An instance of the Pipe class (or a subclass of the pipe class)
+    
+                Returns:
+                    Void.
+        """
+        self.board_layout[position[0]][position[1]] = pipe
 
     def pipe_in_position(self, position) -> Pipe:
         pass
