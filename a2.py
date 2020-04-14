@@ -88,6 +88,40 @@ class PipeGame:
         #             queue.append((pipe, new_direction, new_position))
         #     return False
         # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
+
+    def get_board_layout(self) -> (list<list<Tile, ...>>):
+        pass
+
+    def get_playable_pipes(self) ->(dict<str:int>)​:
+        pass
+
+    def change_playable_amount(self, pipe_name: str, number: int):
+        pass
+
+    def get_pipe(self, position) -> (Pipe|Tile):
+        pass
+
+    def set_pipe(self, pipe: Pipe, position: tuple<int, int>):
+        pass
+
+    def pipe_in_position(self, position) -> Pipe:
+        pass
+
+    def remove_pipe(self, position: tuple<int, int>):
+        pass
+
+    def position_in_direction(self, direction, position) -> tuple<str, tuple<int, int>>:
+        pass
+
+    def end_pipe_positions(self):
+        pass
+
+    def get_starting_position(self) -> (tuple<int, int>):
+        pass
+
+    def get_ending_position(self) -> (tuple<int, int>):
+        pass
+
     
     
 class Tile:
