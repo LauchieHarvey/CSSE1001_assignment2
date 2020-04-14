@@ -172,8 +172,8 @@ class Tile:
 
 class Pipe(Tile):
 
-    def __init__(self, name, orientation = 0):
-        super().__init__(name)
+    def __init__(self, name, orientation = 0, selectable = True):
+        super().__init__(name, selectable)
         self.__orientation = orientation
         self._ID = "pipe"
 
@@ -259,6 +259,11 @@ class Pipe(Tile):
 
 
 class SpecialPipe(Pipe):
+
+    def __init__(self, name, orientation = 0):
+        super().__init__(name, orientation, selectable = False)
+        self._ID = "special_pipe"
+
 
     def __str__(self):
         """Returns the string representation of the Pipe.
