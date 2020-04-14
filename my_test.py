@@ -1,5 +1,4 @@
-from a2 import Tile
-from a2 import Pipe
+from a2 import *
 import unittest
 
 class Test_Tile_methods(unittest.TestCase):
@@ -79,6 +78,28 @@ class Test_Pipe_methods(unittest.TestCase):
 		self.assertEqual(self.c_pipe.get_connected("N"), [])
 		self.assertEqual(self.c_pipe.get_connected("J"), [])
 
+
+class Test_Special_Pipe_subclass_methods(unittest.TestCase):
+
+	def setUp(self):
+		self.a_start_pipe = StartPipe()
+		self.a_end_pipe = EndPipe()
+
+	def test_str_repr(self):
+		self.assertEqual(str(self.a_start_pipe), "StartPipe(0)")
+		self.assertEqual(str(self.a_end_pipe), "EndPipe(0)")
+	
+	def test_inherited_methods(self):
+		self.assertEqual(self.a_start_pipe.get_id(), "special_pipe")
+		self.assertEqual(self.a_end_pipe.get_id(), "special_pipe")
+
+	def test_get_connected(self):
+		self.assertEqual(self.a_start_pipe.get_connected(), "N")
+		self.assertEqual(self.a_end_pipe.get_connected(), "S")
+
+		b_end_pipe = EndPipe(1)
+		self.assertEqual(b_end_pipe._orientation, 1)
+		self.assertEqual(b_end_pipe.get_connected(), "W")
 
 if __name__ == '__main__':
 	unittest.main()
