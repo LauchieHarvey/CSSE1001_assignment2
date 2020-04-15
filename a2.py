@@ -113,7 +113,7 @@ class PipeGame:
                 Returns:
                     Void.
         """
-        playable_pipes[pipe_name] = playable_pipes.get(pipe_name, 0) + number
+        self.playable_pipes[pipe_name] = self.playable_pipes.get(pipe_name, 0) + number
 
 
     def get_pipe(self, position):
@@ -196,8 +196,6 @@ class PipeGame:
                     at index 0 and a tulpe containing the new position (row, col) at index 1
                     None: If the position is invalid.
         """
-        board_height = len(self.board_layout)
-
         if direction not in "NESW":
             return None
 
@@ -210,7 +208,11 @@ class PipeGame:
         direction = Pipe.convert_orientation(direction, 0, 2)
 
         # Filter for invalid position
-        if (BOARD_SIZE - 1 < position[0] < 0) or (BOARD_SIZE - 1 < position[1] < 0):
+
+        if (
+            (position[0] < 0 or position[0] > BOARD_SIZE - 1) or
+            (position[1] < 0 or position[1] > BOARD_SIZE - 1)
+         ):
             return None
 
         return (direction, position)
@@ -219,6 +221,15 @@ class PipeGame:
 
     # time: O(n) worst case despite two for loops.
     def end_pipe_positions(self):
+        """ Finds and saves the positions of special pipes on the game board.
+
+                Parameters:
+                    self (PipeGame obj): An instance of the PipeGame class.
+
+                Returns:
+                    (tuple<int, int>): A tuple in form (row, col) corresponding 
+                    to the location of the old tile/pipe in the 2D game list.
+        """
         self._starting_position = None
         self._ending_position = None
         for row_num, row in enumerate(self.board_layout):
@@ -247,6 +258,9 @@ class PipeGame:
     
     
 class Tile:
+    """ 
+    Class definining Tile objects. Every grid on the board is a instance of the tile object.
+    """
 
     def __init__(self, name, selectable = True):
         """ Instantiates a Tile
@@ -327,8 +341,10 @@ class Tile:
 
 
 class Pipe(Tile):
+    """ Class defining the Pipe object. Corresponds to a pipe in game."""
 
     def __init__(self, name, orientation = 0, selectable = True):
+        """ Constructor method for Pipe instances"""
         super().__init__(name, selectable)
         self._orientation = orientation
         self._ID = "pipe"
@@ -415,8 +431,11 @@ class Pipe(Tile):
 
 
 class SpecialPipe(Pipe):
+    """ Abstract class for the two child classes EndPipe and StartPipe.
+    """
 
     def __init__(self, name, orientation = 0):
+        """ Constructor method for Special Pipe instances"""
         super().__init__(name, selectable = False)
         self._ID = "special_pipe"
         self._orientation = orientation
@@ -440,8 +459,12 @@ class SpecialPipe(Pipe):
 
 
 class StartPipe(SpecialPipe):
+    """ 
+    Class defining the attributes of the pipe from which the game starts.
+    """
 
     def __init__(self, orientation = 0):
+        """ Constructor method for StartPipe instances"""
         super().__init__("start", orientation)
 
     def get_connected(self, side = None):
@@ -455,12 +478,16 @@ class StartPipe(SpecialPipe):
                 Returns:
                     char: The direction that the start pipe is facing (N, S, E or W)
         """
-        return "NESW"[self._orientation]
+        return ["NESW"[self._orientation]]
 
 
 class EndPipe(SpecialPipe):
+    """
+        Child class of Pipe and SpecialPipe. Defines methods unique for end pipes in the game.
+    """
 
     def __init__(self, orientation = 0):
+        """ Constructor method for End Pipe instances"""
         super().__init__("end", orientation)
 
 
@@ -476,7 +503,7 @@ class EndPipe(SpecialPipe):
                 Returns:
                     char: The direction that the start pipe is facing (N, S, E or W)
         """
-        return "SWNE"[self._orientation]
+        return ["SWNE"[self._orientation]]
 
 
 if __name__ == "__main__":
