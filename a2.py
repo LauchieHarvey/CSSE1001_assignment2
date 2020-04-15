@@ -60,8 +60,7 @@ class PipeGame:
         #########################COMMENT THIS SECTION OUT WHEN DOING load_file#######################
 
         ### add code here ###
-        self._starting_position = None
-        self._ending_position = None
+
         # Function call also sets the starting and ending position variables.
         self.end_pipe_positions() 
         
@@ -218,17 +217,19 @@ class PipeGame:
 
     # time: O(n) worst case despite two for loops.
     def end_pipe_positions(self):
+        self._starting_position = None
+        self._ending_position = None
         for row_num, row in enumerate(self.board_layout):
             for col_num, tile in enumerate(row):
                 # Below if checks if the instance is a special_pipe and that at least one of 
                 # the start_pipe/end_pipe hasn't been found yet
-                if (tile.get_id == "special_pipe" and
-                    (not self._starting_position or not self._ending_position)
+                if (tile.get_id() == "special_pipe" and
+                    (self._starting_position is None or self._ending_position is None)
                     ):
-
-                    if tile.__class__.__name__ == "EndPipe":
+                    print("\n\nWE GOT THIS FAR.\n\n")
+                    if tile._name == "end":
                         self._ending_position = (row_num, col_num)
-                    elif tile.__class__.__name__ == "StartPipe":
+                    elif tile._name == "start":
                         self._starting_position = (row_num, col_num)
 
 
