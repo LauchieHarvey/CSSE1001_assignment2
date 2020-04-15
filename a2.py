@@ -33,6 +33,8 @@ PIPE_CONNECTIONS_AS_LISTS = {
 
 ### add code here ###
 
+BOARD_SIZE = 6
+
 class PipeGame:
     """
     A game of Pipes.
@@ -180,12 +182,40 @@ class PipeGame:
 
 
     def position_in_direction(self, direction, position): #  -> tuple<str, tuple<int, int>>
-        """ No fucking clue.
+        """ Returns the opposite direciton and the position corresponding to that 
+        direction from the given position.
 
+                Parameters:
+                    self (PipeGame obj): An instance of the PipeGame class.
+                    position (tuple<int, int>): A tuple in form (row, col) corresponding 
+                    to the location of the old tile/pipe in the 2D game list.
+
+                Returns:
+                    tuple<char, tuple<int, int>>: A tuple with the opposite direction as a char
+                    at index 0 and a tulpe containing the new position (row, col) at index 1
+                    None: If the position is invalid.
         """
-        pass
+        board_height = len(self.board_layout)
 
-    #O(n) worst case despite two for loops.
+        if direction not in "NESW":
+            return None
+
+        # Using a relative position hashing to convert old pos to new pos given direction.
+        pos_update_dict = {'N': (1, 0), 'S': (-1, 0) , 'E': (0, 1), 'W': (0, -1)}
+        position = sum(i for i in zip(position, pos_update_dict.get(direction)))
+
+        # Use static method from Pipe class to flip the direction.
+        direction = Pipe.convert_orientation(direction, 0, 2)
+
+        # Filter for invalid position
+        if (BOARD_SIZE - 1 < position[0] < 0) or (BOARD_SIZE - 1 < position[1] < 0):
+            return None
+
+        return tuple(direction, position)
+
+
+
+    # time: O(n) worst case despite two for loops.
     def end_pipe_positions(self):
         for row_num, row in enumerate(self.board_layout):
             for col_num, tile in enumerate(row):
