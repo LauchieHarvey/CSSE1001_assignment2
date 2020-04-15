@@ -26,7 +26,7 @@ PIPE_CONNECTIONS_AS_LISTS = {
     "cross" : {'N': ['S', 'E', 'W'], "S": ['N', 'E', 'W'],
                 'S': ['N', 'E', 'W'], "W": ['N', 'S', 'E']},
 
-    "junction-t": {'N': ['E', 'W'], 'E': ['N', 'S'], 'S': ['S', 'E', 'W']},
+    "junction-t": {'S': ['E', 'W'], 'E': ['S', 'W'], 'W': ['S', 'E']},
     "diagonals": {'N': ['E'], 'E': ['W'], 'S': ['W'], 'W': ['S']},
     "over-under": {'N': ['S'], 'E': ['W'], 'S': ['N'], 'W': ['E']}
 }
@@ -75,6 +75,7 @@ class PipeGame:
         discovered = [(pipe, None)]
         while queue:
             pipe, direction, position = queue.pop()
+
             for direction in pipe.get_connected(direction):
                     
                 if self.position_in_direction(direction, position) is None:
@@ -82,7 +83,7 @@ class PipeGame:
                     new_position = None
                 else:
                     new_direction, new_position = self.position_in_direction(direction, position)
-                if new_position == self.get_ending_posit(ion()) and \
+                if new_position == self.get_ending_position() and \
                  direction == self.pipe_in_position(new_position).get_connected()[0]:
                     return True
 
@@ -181,7 +182,7 @@ class PipeGame:
 
 
 
-    def position_in_direction(self, direction, position): #  -> tuple<str, tuple<int, int>>
+    def position_in_direction(self, direction, position):
         """ Returns the opposite direciton and the position corresponding to that 
         direction from the given position.
 
@@ -201,8 +202,9 @@ class PipeGame:
             return None
 
         # Using a relative position hashing to convert old pos to new pos given direction.
-        pos_update_dict = {'N': (1, 0), 'S': (-1, 0) , 'E': (0, 1), 'W': (0, -1)}
-        position = sum(i for i in zip(position, pos_update_dict.get(direction)))
+        pos_update_dict = {'N': (-1, 0), 'S': (1, 0) , 'E': (0, 1), 'W': (0, -1)}
+        relative_position = pos_update_dict.get(direction)
+        position = (position[0] + relative_position[0], position[1] + relative_position[1])
 
         # Use static method from Pipe class to flip the direction.
         direction = Pipe.convert_orientation(direction, 0, 2)
@@ -211,7 +213,7 @@ class PipeGame:
         if (BOARD_SIZE - 1 < position[0] < 0) or (BOARD_SIZE - 1 < position[1] < 0):
             return None
 
-        return tuple(direction, position)
+        return (direction, position)
 
 
 
@@ -226,7 +228,7 @@ class PipeGame:
                 if (tile.get_id() == "special_pipe" and
                     (self._starting_position is None or self._ending_position is None)
                     ):
-                    print("\n\nWE GOT THIS FAR.\n\n")
+
                     if tile._name == "end":
                         self._ending_position = (row_num, col_num)
                     elif tile._name == "start":
@@ -235,13 +237,11 @@ class PipeGame:
 
     def get_starting_position(self):
         """ Getter method for the positon of the starting pipe in the board_layout. """
-        print("get_starting_position", self._starting_position)
         return self._starting_position
 
 
     def get_ending_position(self):
         """ Getter method for the positon of the end pipe in the board_layout. """
-        print("get_ending_position", self._ending_position)
         return self._ending_position
 
     
