@@ -66,35 +66,34 @@ class PipeGame:
         self.end_pipe_positions() 
         
 
-    # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
-    # def check_win(self):
-    #     """
-    #     (bool) Returns True  if the player has won the game False otherwise.
-    #     """
-    #     position = self.get_starting_position()
-    #     pipe = self.pipe_in_position(position)
-    #     queue = [(pipe, None, position)]
-    #     discovered = [(pipe, None)]
-    #     while queue:
-    #         pipe, direction, position = queue.pop()
-    #         for direction in pipe.get_connected(direction):
-                
-    #             if self.position_in_direction(direction, position) is None:
-    #                 new_direction = None 
-    #                 new_position = None
-    #             else:
-    #                 new_direction, new_position = self.position_in_direction(direction, position)
-    #             if new_position == self.get_ending_posit(ion() and direction == self.pipe_in_position(
-        #                     new_position).get_connected()[0]:
-        #                 return True
-    
-        #             pipe = self.pipe_in_position(new_position)
-        #             if pipe is None or (pipe, new_direction) in discovered:
-        #                 continue
-        #             discovered.append((pipe, new_direction))
-        #             queue.append((pipe, new_direction, new_position))
-        #     return False
-        # #########################UNCOMMENT THIS FUNCTION WHEN READY#######################
+    def check_win(self):
+        """
+            (bool) Returns True  if the player has won the game False otherwise.
+        """
+        position = self.get_starting_position()
+        pipe = self.pipe_in_position(position)
+        queue = [(pipe, None, position)]
+        discovered = [(pipe, None)]
+        while queue:
+            pipe, direction, position = queue.pop()
+            for direction in pipe.get_connected(direction):
+                    
+                if self.position_in_direction(direction, position) is None:
+                    new_direction = None 
+                    new_position = None
+                else:
+                    new_direction, new_position = self.position_in_direction(direction, position)
+                if new_position == self.get_ending_posit(ion()) and \
+                 direction == self.pipe_in_position(new_position).get_connected()[0]:
+                    return True
+
+                pipe = self.pipe_in_position(new_position)
+                if pipe is None or (pipe, new_direction) in discovered:
+                    continue
+                discovered.append((pipe, new_direction))
+                queue.append((pipe, new_direction, new_position))
+        return False
+
 
     def get_board_layout(self):
         """ Getter method for the 2D board layout of the game."""
@@ -143,6 +142,7 @@ class PipeGame:
                 Returns:
                     Void.
         """
+        self.playable_pipes[pipe.get_name()] -= 1
         self.board_layout[position[0]][position[1]] = pipe
 
     def pipe_in_position(self, position):
@@ -177,8 +177,9 @@ class PipeGame:
                     Void.
         """
         old_pipe = self.board_layout[position[0]][position[1]]
-        self.playable_pipes[old_pipe] += 1
-        old_pipe = Tile("tile")
+        self.playable_pipes[old_pipe.get_name()] += 1
+        self.board_layout[position[0]][position[1]] = Tile("tile")
+
 
 
     def position_in_direction(self, direction, position): #  -> tuple<str, tuple<int, int>>
@@ -233,11 +234,13 @@ class PipeGame:
 
     def get_starting_position(self):
         """ Getter method for the positon of the starting pipe in the board_layout. """
+        print("get_starting_position", self._starting_position)
         return self._starting_position
 
 
     def get_ending_position(self):
         """ Getter method for the positon of the end pipe in the board_layout. """
+        print("get_ending_position", self._ending_position)
         return self._ending_position
 
     
@@ -412,8 +415,8 @@ class Pipe(Tile):
 
 class SpecialPipe(Pipe):
 
-    def __init__(self, orientation = 0):
-        super().__init__(name = "", selectable = False)
+    def __init__(self, name, orientation = 0):
+        super().__init__(name, selectable = False)
         self._ID = "special_pipe"
         self._orientation = orientation
 
@@ -438,7 +441,7 @@ class SpecialPipe(Pipe):
 class StartPipe(SpecialPipe):
 
     def __init__(self, orientation = 0):
-        super().__init__(orientation)
+        super().__init__("start", orientation)
 
     def get_connected(self, side = None):
         """ Overwritten method from Pipe Superclass. Returns direction of the StartPipe instance.
@@ -457,7 +460,7 @@ class StartPipe(SpecialPipe):
 class EndPipe(SpecialPipe):
 
     def __init__(self, orientation = 0):
-        super().__init__(orientation)
+        super().__init__("end", orientation)
 
 
 
