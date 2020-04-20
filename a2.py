@@ -39,7 +39,7 @@ class PipeGame:
     """
     A game of Pipes.
     """
-    def __init__(self, game_file='game_3.csv'):
+    def __init__(self, game_file='game_4.csv'):
         """
         Construct a game of Pipes from a file name.
 
@@ -81,7 +81,6 @@ class PipeGame:
                     continue
                 discovered.append((pipe, new_direction))
                 queue.append((pipe, new_direction, new_position))
-            print(discovered)
         return False
 
 
