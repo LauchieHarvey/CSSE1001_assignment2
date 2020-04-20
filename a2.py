@@ -39,7 +39,7 @@ class PipeGame:
     """
     A game of Pipes.
     """
-    def __init__(self, game_file='game_4.csv'):
+    def __init__(self, game_file='game_1.csv'):
         """
         Construct a game of Pipes from a file name.
 
