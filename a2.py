@@ -39,7 +39,7 @@ class PipeGame:
     """
     A game of Pipes.
     """
-    def __init__(self, game_file='game_1.csv'):
+    def __init__(self, game_file='game_3.csv'):
         """
         Construct a game of Pipes from a file name.
 
@@ -81,6 +81,7 @@ class PipeGame:
                     continue
                 discovered.append((pipe, new_direction))
                 queue.append((pipe, new_direction, new_position))
+            print(discovered)
         return False
 
 
@@ -428,7 +429,7 @@ class Pipe(Tile):
         elif current_orientation == new_orientation:
             return current_side
 
-        directions = ["NESW", "WNES", "SWNE", "ESWN"]
+        directions = ["NESW", "ESWN", "SWNE", "WNES"]
         side_index = directions[current_orientation].find(current_side)
         converted_side = directions[new_orientation][side_index]
         return converted_side
