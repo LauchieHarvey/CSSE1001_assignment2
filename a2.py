@@ -46,21 +46,10 @@ class PipeGame:
         Parameters:
             game_file (str): name of the game file.
         """
-        """
-        self.board_layout = [[Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), \
-        Tile('tile', True), Tile('tile', True)], [StartPipe(1), Tile('tile', True), Tile('tile', True), \
-        Tile('tile', True), Tile('tile', True), Tile('tile', True)], [Tile('tile', True), Tile('tile', True), \
-        Tile('tile', True), Pipe('junction-t', 0, False), Tile('tile', True), Tile('tile', True)], [Tile('tile', True), \
-        Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('locked', False), Tile('tile', True)], \
-        [Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), EndPipe(3), \
-        Tile('tile', True)], [Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), \
-        Tile('tile', True), Tile('tile', True)]]
-        """
         self.playable_pipes = {'straight': 0, 'corner': 0, 'cross': 0, 'junction-t': 0, 'diagonals': 0, 'over-under': 0}
         
         self.board_layout = self.load_file(game_file)
         
-
         # Function call also sets the starting and ending position variables.
         self.end_pipe_positions() 
         
