@@ -1,3 +1,5 @@
+import csv
+
 EMPTY_TILE = "tile"
 START_PIPE = "start"
 END_PIPE = "end"
@@ -31,9 +33,7 @@ PIPE_CONNECTIONS_AS_LISTS = {
     "over-under": {'N': ['S'], 'E': ['W'], 'S': ['N'], 'W': ['E']}
 }
 
-### add code here ###
 
-BOARD_SIZE = 6
 
 class PipeGame:
     """
@@ -46,7 +46,7 @@ class PipeGame:
         Parameters:
             game_file (str): name of the game file.
         """
-        #########################COMMENT THIS SECTION OUT WHEN DOING load_file#######################
+        """
         self.board_layout = [[Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), \
         Tile('tile', True), Tile('tile', True)], [StartPipe(1), Tile('tile', True), Tile('tile', True), \
         Tile('tile', True), Tile('tile', True), Tile('tile', True)], [Tile('tile', True), Tile('tile', True), \
@@ -55,11 +55,11 @@ class PipeGame:
         [Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), EndPipe(3), \
         Tile('tile', True)], [Tile('tile', True), Tile('tile', True), Tile('tile', True), Tile('tile', True), \
         Tile('tile', True), Tile('tile', True)]]
-
-        self.playable_pipes = {'straight': 1, 'corner': 1, 'cross': 1, 'junction-t': 1, 'diagonals': 1, 'over-under': 1}
-        #########################COMMENT THIS SECTION OUT WHEN DOING load_file#######################
-
-        ### add code here ###
+        """
+        self.playable_pipes = {'straight': 0, 'corner': 0, 'cross': 0, 'junction-t': 0, 'diagonals': 0, 'over-under': 0}
+        self._game_file = game_file
+        self.board_layout = self.set_board_layout()
+        
 
         # Function call also sets the starting and ending position variables.
         self.end_pipe_positions() 
@@ -208,16 +208,51 @@ class PipeGame:
         direction = Pipe.convert_orientation(direction, 0, 2)
 
         # Filter for invalid position
+        board_size = len(board_layout)
 
         if (
-            (position[0] < 0 or position[0] > BOARD_SIZE - 1) or
-            (position[1] < 0 or position[1] > BOARD_SIZE - 1)
+            (position[0] < 0 or position[0] > Board_Size - 1) or
+            (position[1] < 0 or position[1] > Board_Size - 1)
          ):
             return None
 
         return (direction, position)
 
 
+    def set_board_layout(self):
+        """ Takes a .csv file and converts it into the board_layout list.
+            Also sets the initial playable pipes dictionary
+
+                Parameters:
+                    game_file (.csv): A .csv containing a structure overview
+                    of an initial game state
+
+                Returns:
+                    list(tile): A list of tile (and relevant subclass) instances 
+                    reflecting the structure given in the .csv file.
+        """
+        board_layout = []
+        with open(self._game_file, 'r') as csv_file:
+            file_rows = [row.split(',') for row in csv_file.readlines()]
+            # Skip the last row because the last row contains playable_pipe information
+            for row in file_rows[:-1]:
+                board_layout.append([])
+                for tile_description in row:
+                    tile_code = ''.join(char for char in tile_description if not char.isdigit())
+                    tile_orientation = tile_description.replace(tile_code, '')
+                    if tile_code == '#':
+                        current_tile = Tile('tile', True)
+                    elif SPECIAL_TILES.get(tile_code) is not None:
+                        current_tile_type = SPECIAL_TILES.get(tile_code)
+                        current_tile = 
+                    elif PIPES.get(tile_code) is not None:
+                        current_tile_type = PIPES.get(tile_code)
+                    board_layout[-1].append(current_tile)
+
+            for pipe_num, pipe in enumerate(self.playable_pipes):
+                self.change_playable_amount(pipe, int(file_rows[-1][pipe_num]))
+
+        return board_layout
 
     # time: O(n) worst case despite two for loops.
     def end_pipe_positions(self):
