@@ -57,8 +57,8 @@ class PipeGame:
         Tile('tile', True), Tile('tile', True)]]
         """
         self.playable_pipes = {'straight': 0, 'corner': 0, 'cross': 0, 'junction-t': 0, 'diagonals': 0, 'over-under': 0}
-        self._game_file = game_file
-        self.board_layout = self.set_board_layout()
+        
+        self.board_layout = self.load_file(game_file)
         
 
         # Function call also sets the starting and ending position variables.
@@ -208,18 +208,18 @@ class PipeGame:
         direction = Pipe.convert_orientation(direction, 0, 2)
 
         # Filter for invalid position
-        board_size = len(board_layout)
+        board_size = len(self.board_layout)
 
         if (
-            (position[0] < 0 or position[0] > Board_Size - 1) or
-            (position[1] < 0 or position[1] > Board_Size - 1)
+            (position[0] < 0 or position[0] > board_size - 1) or
+            (position[1] < 0 or position[1] > board_size - 1)
          ):
             return None
 
         return (direction, position)
 
 
-    def set_board_layout(self):
+    def load_file(self, game_file):
         """ Takes a .csv file and converts it into the board_layout list.
             Also sets the initial playable pipes dictionary
 
@@ -232,25 +232,47 @@ class PipeGame:
                     reflecting the structure given in the .csv file.
         """
         board_layout = []
-        with open(self._game_file, 'r') as csv_file:
-            file_rows = [row.split(',') for row in csv_file.readlines()]
-            # Skip the last row because the last row contains playable_pipe information
-            for row in file_rows[:-1]:
-                board_layout.append([])
-                for tile_description in row:
-                    tile_code = ''.join(char for char in tile_description if not char.isdigit())
-                    tile_orientation = tile_description.replace(tile_code, '')
-                    if tile_code == '#':
-                        current_tile = Tile('tile', True)
-                    elif SPECIAL_TILES.get(tile_code) is not None:
-                        current_tile_type = SPECIAL_TILES.get(tile_code)
-                        current_tile = 
-                    elif PIPES.get(tile_code) is not None:
-                        current_tile_type = PIPES.get(tile_code)
-                    board_layout[-1].append(current_tile)
 
-            for pipe_num, pipe in enumerate(self.playable_pipes):
-                self.change_playable_amount(pipe, int(file_rows[-1][pipe_num]))
+        # Context manager for the game file.
+        with open(game_file, 'r') as csv_file:
+            # Read rows from the game file into a 3D list split by commas. 
+            # Each minimal list represents a tile (tile description).
+            file_rows = [row.split(',') for row in csv_file.readlines()]
+            # File has been read into a variable so there is no need to keep it open.
+        # Skip the last row because the last row contains playable_pipe information
+        for row in file_rows[:-1]:
+            board_layout.append([])
+
+            for tile_description in row:
+                tile_description = tile_description.replace("\n", '')
+                # the tile_code is it's key in the PIPES dict or the SPECIAL_TILES dict.
+                tile_code = ''.join(char for char in tile_description if not char.isdigit())
+                tile_orientation = tile_description.replace(tile_code, '')
+                tile_orientation = int(tile_orientation) if tile_orientation else 0
+
+                if tile_code == '#':
+                    current_tile = Tile(EMPTY_TILE, True)
+
+                elif SPECIAL_TILES.get(tile_code) is not None:
+
+                    if tile_code == 'S':
+                        current_tile = StartPipe(tile_orientation)
+                    elif tile_code == 'E':
+                        current_tile = EndPipe(tile_orientation)
+                    elif tile_code == 'L':
+                        current_tile = Tile(LOCKED_TILE, False)
+
+                elif PIPES.get(tile_code) is not None:
+                    current_tile_type = PIPES.get(tile_code)
+                    current_tile = Pipe(current_tile_type, tile_orientation, False)
+
+                # Add the tile to the board_layout
+                board_layout[-1].append(current_tile)
+
+        # Iterate over the playable pipes dictionary and set the 
+        # value to corresponding integer given in the last line of the .csv file.
+        for pipe_num, pipe in enumerate(self.playable_pipes):
+            self.change_playable_amount(pipe, int(file_rows[-1][pipe_num]))
 
         return board_layout
 
