@@ -20,19 +20,6 @@ PIPES = {
     "OU": "over-under"
 }
 
-# Only works in orientation of 0.
-PIPE_CONNECTIONS_AS_LISTS = {
-    "straight": {'N': ['S'], 'S': ['N']},
-    "corner": {'N': ['E'], 'E': ['N']},
-
-    "cross" : {'N': ['S', 'E', 'W'], "S": ['N', 'E', 'W'],
-                'S': ['N', 'E', 'W'], "W": ['N', 'S', 'E']},
-
-    "junction-t": {'S': ['E', 'W'], 'E': ['S', 'W'], 'W': ['S', 'E']},
-    "diagonals": {'N': ['E'], 'E': ['W'], 'S': ['W'], 'W': ['S']},
-    "over-under": {'N': ['S'], 'E': ['W'], 'S': ['N'], 'W': ['E']}
-}
-
 
 
 class PipeGame:
@@ -46,9 +33,9 @@ class PipeGame:
         Parameters:
             game_file (str): name of the game file.
         """
-        self.playable_pipes = {'straight': 0, 'corner': 0, 'cross': 0, 'junction-t': 0, 'diagonals': 0, 'over-under': 0}
+        self._playable_pipes = {'straight': 0, 'corner': 0, 'cross': 0, 'junction-t': 0, 'diagonals': 0, 'over-under': 0}
         
-        self.board_layout = self.load_file(game_file)
+        self._board_layout = self.load_file(game_file)
         
         # Function call also sets the starting and ending position variables.
         self.end_pipe_positions() 
@@ -86,11 +73,11 @@ class PipeGame:
 
     def get_board_layout(self):
         """ Getter method for the 2D board layout of the game."""
-        return self.board_layout
+        return self._board_layout
 
     def get_playable_pipes(self):
         """ Getter method for the playable pipes dictionary of the game instance."""
-        return self.playable_pipes
+        return self._playable_pipes
 
     def change_playable_amount(self, pipe_name: str, number: int):
         """ Increments the amount of playable pipes for the specified pipe type by number
@@ -102,7 +89,7 @@ class PipeGame:
                 Returns:
                     Void.
         """
-        self.playable_pipes[pipe_name] = self.playable_pipes.get(pipe_name, 0) + number
+        self._playable_pipes[pipe_name] = self._playable_pipes.get(pipe_name, 0) + number
 
 
     def get_pipe(self, position):
@@ -117,7 +104,7 @@ class PipeGame:
                     (Pipe | Tile) obj: If the tile has no Pipe then a tile instance is returned.
                     Otherwise the most specialised instance of the pipe is returned.
         """
-        return self.board_layout[position[0]][position[1]]
+        return self._board_layout[position[0]][position[1]]
 
     def set_pipe(self, pipe, position):
         """ Setter method, sets the tile at the given position to the given pipe. Updates available pipes.
@@ -131,8 +118,8 @@ class PipeGame:
                 Returns:
                     Void.
         """
-        self.playable_pipes[pipe.get_name()] -= 1
-        self.board_layout[position[0]][position[1]] = pipe
+        self._playable_pipes[pipe.get_name()] -= 1
+        self._board_layout[position[0]][position[1]] = pipe
 
     def pipe_in_position(self, position):
         """ Returns the Pipe instance of the pipe in the given position of the game board if it exists.
@@ -149,7 +136,7 @@ class PipeGame:
         if position is None:
             return None
 
-        obj_at_position = self.board_layout[position[0]][position[1]]
+        obj_at_position = self._board_layout[position[0]][position[1]]
 
         if obj_at_position.get_id() in ["pipe", "special_pipe"]:
             return obj_at_position
@@ -165,9 +152,9 @@ class PipeGame:
                 Returns:
                     Void.
         """
-        old_pipe = self.board_layout[position[0]][position[1]]
-        self.playable_pipes[old_pipe.get_name()] += 1
-        self.board_layout[position[0]][position[1]] = Tile("tile")
+        old_pipe = self._board_layout[position[0]][position[1]]
+        self._playable_pipes[old_pipe.get_name()] += 1
+        self._board_layout[position[0]][position[1]] = Tile("tile")
 
 
 
@@ -196,12 +183,12 @@ class PipeGame:
         # Use static method from Pipe class to flip the direction.
         direction = Pipe.convert_orientation(direction, 0, 2)
 
-        # Filter for invalid position
-        board_size = len(self.board_layout)
+        board_size = len(self._board_layout)
 
+        # Filter for invalid position
         if (
-            (position[0] < 0 or position[0] > board_size - 1) or
-            (position[1] < 0 or position[1] > board_size - 1)
+            (position[0] < 0 or position[0] >= board_size) or
+            (position[1] < 0 or position[1] >= board_size)
          ):
             return None
 
@@ -260,7 +247,7 @@ class PipeGame:
 
         # Iterate over the playable pipes dictionary and set the 
         # value to corresponding integer given in the last line of the .csv file.
-        for pipe_num, pipe in enumerate(self.playable_pipes):
+        for pipe_num, pipe in enumerate(self._playable_pipes):
             self.change_playable_amount(pipe, int(file_rows[-1][pipe_num]))
 
         return board_layout
@@ -278,7 +265,7 @@ class PipeGame:
         """
         self._starting_position = None
         self._ending_position = None
-        for row_num, row in enumerate(self.board_layout):
+        for row_num, row in enumerate(self._board_layout):
             for col_num, tile in enumerate(row):
                 # Below if checks if the instance is a special_pipe and that at least one of 
                 # the start_pipe/end_pipe hasn't been found yet
@@ -395,6 +382,18 @@ class Pipe(Tile):
         self._orientation = orientation
         self._ID = "pipe"
 
+        # Only works in orientation of 0. Static variable.
+        Pipe.CONNECTIONS = {
+            "straight": {'N': ['S'], 'S': ['N']},
+            "corner": {'N': ['E'], 'E': ['N']},
+
+            "cross" : {'N': ['S', 'E', 'W'], "S": ['N', 'E', 'W'],
+                        'S': ['N', 'E', 'W'], "W": ['N', 'S', 'E']},
+
+            "junction-t": {'S': ['E', 'W'], 'E': ['S', 'W'], 'W': ['S', 'E']},
+            "diagonals": {'N': ['E'], 'E': ['W'], 'S': ['W'], 'W': ['S']},
+            "over-under": {'N': ['S'], 'E': ['W'], 'S': ['N'], 'W': ['E']}
+        }
 
     def get_connected(self, side):
         """ Returns a list containing all of the sides that connect to the given side.
@@ -409,7 +408,7 @@ class Pipe(Tile):
                     empty list if input is invalid or no sides connect.
         """
         standard_side = Pipe.convert_orientation(side, self._orientation, 0)
-        standard_connections_dict = PIPE_CONNECTIONS_AS_LISTS.get(self._name, None)
+        standard_connections_dict = Pipe.CONNECTIONS.get(self._name, None)
         if standard_connections_dict is None or standard_side is None:
             return []
 
