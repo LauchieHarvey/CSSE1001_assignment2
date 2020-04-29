@@ -365,7 +365,7 @@ class Tile:
                 Returns:
                     str: String representing the given instance
         """
-        return f"Tile('{self.get_name()}', {self.can_select()})"
+        return f"Tile('{self.get_name()}', {str(self.can_select())})"
 
     def __repr__(self):
         """ Equivalent functionality as __str__ above."""
@@ -387,7 +387,7 @@ class Pipe(Tile):
             "straight": {'N': ['S'], 'S': ['N']},
             "corner": {'N': ['E'], 'E': ['N']},
 
-            "cross" : {'N': ['S', 'E', 'W'], "S": ['N', 'E', 'W'],
+            "cross" : {'N': ['S', 'E', 'W'], 'E': ['N', 'S', 'W'],
                         'S': ['N', 'E', 'W'], "W": ['N', 'S', 'E']},
 
             "junction-t": {'S': ['E', 'W'], 'E': ['S', 'W'], 'W': ['S', 'E']},
@@ -408,6 +408,7 @@ class Pipe(Tile):
                     empty list if input is invalid or no sides connect.
         """
         standard_side = Pipe.convert_orientation(side, self._orientation, 0)
+
         standard_connections_dict = Pipe.CONNECTIONS.get(self._name, None)
         if standard_connections_dict is None or standard_side is None:
             return []
@@ -444,7 +445,10 @@ class Pipe(Tile):
                 Returns:
                     Void.
         """
-        self._orientation += 1 if self._orientation != 3 else -3
+        if direction > 0:
+            self._orientation += 1 if self._orientation != 3 else -3
+        elif direction < 0:
+            self._orientation -= 1 if self._orientation != -1 else 3
 
     def get_orientation(self):
         """ Getter method for the orientation of the pipe 
@@ -481,9 +485,8 @@ class SpecialPipe(Pipe):
 
     def __init__(self, name, orientation = 0):
         """ Constructor method for Special Pipe instances"""
-        super().__init__(name, selectable = False)
+        super().__init__(name, orientation, selectable = False)
         self._ID = "special_pipe"
-        self._orientation = orientation
 
 
     def __str__(self):
