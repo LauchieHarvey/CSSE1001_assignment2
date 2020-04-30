@@ -1,4 +1,4 @@
-import csv
+# A game of pipes :)
 
 EMPTY_TILE = "tile"
 START_PIPE = "start"
