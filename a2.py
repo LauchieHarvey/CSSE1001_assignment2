@@ -32,6 +32,7 @@ class PipeGame:
         Parameters:
             game_file (str): name of the game file.
         """
+        #Declaring the playable pipes dictionary so that it can be set in the load_file function.
         self._playable_pipes = {'straight': 0, 'corner': 0, 'cross': 0, 'junction-t': 0, 'diagonals': 0, 'over-under': 0}
         
         self._board_layout = self.load_file(game_file)
