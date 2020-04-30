@@ -21,7 +21,6 @@ PIPES = {
 }
 
 
-
 class PipeGame:
     """
     A game of Pipes.
@@ -175,9 +174,11 @@ class PipeGame:
         if direction not in "NESW":
             return None
 
-        # Using a relative position hashing to convert old pos to new pos given direction.
+        # Relative position hash table
         pos_update_dict = {'N': (-1, 0), 'S': (1, 0) , 'E': (0, 1), 'W': (0, -1)}
         relative_position = pos_update_dict.get(direction)
+
+        # Add the relative position to the old position.
         position = (position[0] + relative_position[0], position[1] + relative_position[1])
 
         # Use static method from Pipe class to flip the direction.
@@ -407,14 +408,18 @@ class Pipe(Tile):
                     list<str>: a list of characters corresponding to sides of the tile.
                     empty list if input is invalid or no sides connect.
         """
+        # Convert side to the side it corresponds to if the orientation was 0
         standard_side = Pipe.convert_orientation(side, self._orientation, 0)
 
+        # Find the connections dictionary that is relevant to the pipe.
         standard_connections_dict = Pipe.CONNECTIONS.get(self._name, None)
         if standard_connections_dict is None or standard_side is None:
             return []
-
+        # Get the list of sides that are connected to the standard side.
         standard_connections = standard_connections_dict.get(standard_side)
         if standard_connections is not None:
+            # For every standard side in the standard connection list 
+            # convert it back to the original orientation and return it
             return [Pipe.convert_orientation(i, 0, self._orientation) for i in standard_connections]
         else:
             return []
@@ -422,7 +427,20 @@ class Pipe(Tile):
 
     @staticmethod
     def convert_orientation(current_side, current_orientation, new_orientation = 0):
-        """ Static method converts a side to a side in a different orientation."""
+        """ Static method converts a side to a side in a different orientation.
+        
+                Parameters:
+                    current_side (char): in "NSEW", the side at the given orientation.
+                    current_orientation (int): The orientation that the side is relative to.
+                    new_orientation (int): The orientation that the side is to be 
+                    converted to be relative to.
+
+                Returns:
+                    (char): The standardised side to an orientation of 0.
+
+            e.g. convert_orientation('E', 1, 0) --> 'N'
+                Because at the orientation of 1, east is the top most side.
+        """
         if current_side not in "NSEW":
             return None
         elif current_orientation == new_orientation:
@@ -448,7 +466,7 @@ class Pipe(Tile):
         if direction > 0:
             self._orientation += 1 if self._orientation != 3 else -3
         elif direction < 0:
-            self._orientation -= 1 if self._orientation != -1 else 3
+            self._orientation -= 1 if self._orientation != 0 else -3
 
     def get_orientation(self):
         """ Getter method for the orientation of the pipe 
